@@ -1,0 +1,51 @@
+<project name="FlexZMQ Tests Build" default="test">
+
+	<!--
+		
+	This build file requires you to set an environment variable 'FLEX_4_SDK' pointing to 'Flex_SDK_4.x'.
+	
+	Example:
+		export FLEX_4_SDK=/Applications/FDT/SDKs/flex_sdk_4.5.0.17689
+		export PATH="/Applications/FDT/SDKs/flex_sdk_4.5.0.17689/bin:${PATH}"
+		
+	-->
+	
+	<property environment="env"/>
+	<property file="build.properties" />
+	
+	<taskdef resource="flexTasks.tasks" classpath="${flexTask.lib}"/>
+	<taskdef resource="flexUnitTasks.tasks" classpath="${flexUnitTestTask.lib}"/>
+	
+	
+	<target name="test">
+		<echo message="Testing" />
+		<delete dir="${test.output.dir}" />
+		<delete dir="${test.report.dir}" />
+		<mkdir dir="${test.output.dir}" />
+		<mkdir dir="${test.report.dir}" />
+		<mxmlc file="${test.src}${file.separator}${test.file}"
+			output="${test.output.dir}${file.separator}${test.output.file}">
+			<load-config filename="${FLEX_HOME}${file.separator}frameworks${file.separator}flex-config.xml"/>
+			<source-path path-element="${FLEX_HOME}${file.separator}frameworks"/>
+			<source-path path-element="${src}"/>
+			<compiler.library-path dir="${LIBS_DIR}" append="true">
+				<include name="*.swc"/>
+			</compiler.library-path>
+			<default-size width="900" height="600"/>
+			<compiler.debug>false</compiler.debug>			
+		</mxmlc>
+		<flexunit swf="${test.output.dir}${file.separator}${test.output.file}"
+			toDir="${test.report.dir}"
+			haltonfailure="false"
+			verbose="true"
+			localTrusted="true"/>
+		<junitreport todir="${test.report.dir}">
+			<fileset dir="${test.report.dir}">
+				<include name="*"/>
+			</fileset>
+			<report format="frames" todir="${test.report.dir}${file.separator}html"/>
+		</junitreport>
+	</target>
+	
+	
+</project>

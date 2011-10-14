@@ -1,0 +1,13 @@
+PLEASE NOTE:
+
+- Because of the limitations of Flash platform this library supports a subset of the features of ZMQ;
+- This project is still under development, see TODO List for missing features before deciding whether to use this library or not.
+
+
+TODO:
+
+- Implement socket monitor so it works regardless of server being live;
+- RequestPolicy.writeAddress() doesn't implement full functionality as described here: http://zguide.zeromq.org/page:all#Request-Reply-Envelopes;
+- ZMQ.setSocketOption implementation for 'unsubscribe' option is missing;
+- Peer-to-Peer socket type is not supported yet;
+- Review examples.

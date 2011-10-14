@@ -1,0 +1,9 @@
+.project
+.settings/
+.DS_Store
+*.swf
+bin/
+documentation/
+test-bin/
+test-report/
+examples/
