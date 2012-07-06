@@ -78,6 +78,8 @@ package com.rimusdesign.flexzmq{
 	/**
 	 * This is a main class of FlexZMQ library.
 	 * 
+	 * Because of a single-threaded nature of Flash platform FlexZMQ does not need a context object, sockets are instantiated directly.
+	 * 
 	 * @author rimaskrivickas
 	 * 
 	 * @example The following code is a 'Request-Reply' connection example:
@@ -158,6 +160,10 @@ package com.rimusdesign.flexzmq{
 	public class ZMQ extends EventDispatcher {
 		
 		
+		public static const REQ : String = "request";
+		public static const SUB : String = "subscribe";
+		
+		
 		private var socket				: Socket;
 //		private var socketMonitor		: SocketMonitor;
 		private var policyContext		: PolicyContext;
@@ -177,18 +183,6 @@ package com.rimusdesign.flexzmq{
 		}
 		
 		
-		private function getOption ( optionName : String ) : Vector.<Option> {
-			
-			var result : Vector.<Option> = options.filter (
-				function ( item : Option, index : int, list : Vector.<Option> ) : Boolean {
-					return item.optionName == optionName ? true : false;
-				}
-			);
-			
-			return result.length != 0 ? result : null;
-		}
-		
-		
 //		private function monitorSocket ( ) : void {
 //			
 //			socketMonitor.addEventListener ( StatusEvent.STATUS, onSocketStatus );
@@ -197,12 +191,7 @@ package com.rimusdesign.flexzmq{
 //		}
 
 
-		private function addPolicies ( ) : void {
-			
-			policyContext = new PolicyContext ( socket, getOption )
-				.addPolicy ( ZMQSocketType.REQ, RequestPolicy )
-				.addPolicy ( ZMQSocketType.SUB, SubscribePolicy );
-		}
+		
 		
 		
 		public function connect ( address : String, port : uint ) : void {
@@ -230,6 +219,7 @@ package com.rimusdesign.flexzmq{
 			removeEventListeners ( );
 		}
 		
+		
 //		TODO handle unsubscribe
 		public function setSocketOption ( optionName : String, optionValue : Object ) : void {
 			
@@ -244,6 +234,27 @@ package com.rimusdesign.flexzmq{
 				
 				throw new Error ( "This socket type does not support specified option." );
 			}
+		}
+		
+		
+		// Private methods
+		private function addPolicies ( ) : void {
+			
+			policyContext = new PolicyContext ( socket, getOption )
+				.addPolicy ( ZMQ.REQ, RequestPolicy )
+				.addPolicy ( ZMQ.SUB, SubscribePolicy );
+		}
+		
+		
+		private function getOption ( optionName : String ) : Vector.<Option> {
+			
+			var result : Vector.<Option> = options.filter (
+				function ( item : Option, index : int, list : Vector.<Option> ) : Boolean {
+					return item.optionName == optionName ? true : false;
+				}
+			);
+			
+			return result.length != 0 ? result : null;
 		}
 		
 		

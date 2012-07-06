@@ -6,7 +6,7 @@ package com.rimusdesign.flexzmq {
 	 */
 	public class SocketOption {
 		
-		
+		// TODO change to integers according to guidelines
 		public static const IDENTITY	: String = "identity";
 		public static const SUBSCRIBE	: String = "subscribe";
 		public static const UNSUBSCRIBE	: String = "unsubscribe";
