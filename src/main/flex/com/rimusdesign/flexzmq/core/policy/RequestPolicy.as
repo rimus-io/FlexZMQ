@@ -47,6 +47,7 @@ package com.rimusdesign.flexzmq.core.policy {
 			}
 			
 			socket.writeBytes ( byteArray );
+			socket.flush();
 		}
 		
 		
